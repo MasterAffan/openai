@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "flowboard-483410",
+  "private_key_id": "ae9be8b828559f452231b8749cfc99ba6249a118",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXOoyvSjfxiTH9\n4snyqTEFS3ej9gsPtysJrmFiUoNSLjIIq1qi4qKoAsCXvduauFJaOnnWXlQSkMnk\noGvwgvHDdKXAPTWPQfuknJGzVkRhpaUlzGov35m93Lb2nQsMK9s/fWnaPAdqKXMJ\nqGzOyF+ORCbQgFP0pGpNLBfC5dC/bWMOtJF10/T1z4eF5DKFYzkIycTR4wtGC+ai\n3tysnmSruoIQpnqkCjNKJbxBuhHatNAu6GALH/i+D0wSb5D1oZPEb7k0ZvODUbI2\ni/xRqbUI1NyNOulVLVg8QMtUGApb84WoE0Pbg3pQUKCL2n+OxusuBLTKKPZPb1Aj\nHt1Xr24TAgMBAAECggEALqqXIjptY//5qMZUmiiio2cj3rk8tZdI1R52F7CtrGzr\n7Kfv+qakGeNrigfA3hA1/XjhAwktuWLrojzswhWuRCnZQibBQdlTLXtRLL2YsWc7\nvJvFQsultiSHYzeX4qQf7oolYX43rYdn49mQ5giIEC8wqROIlMwtr23FUVO4pHFD\n2tvh8suVaaEH0xQ4TWEI8QFK8JJPWLLZZOcHee1Vt9FPAxLjprHvbfEh+4wF2P6L\nbrOY2q4w6MOPHfQc7xBRFo6FJukQvwu7Wg4GQOn+Fvj4r2b76FqN9MPLggM1L9dO\nqE2lzY19YXHW/n+jAS3Ea+gVbLXnKr37qRA9GsCe1QKBgQDNzYqlsvTQAc5mO65E\n1jTDMewpjXqSm6E4s2tzM1wV2ePseVxja7SuLWVK2lURO3zLT2dsuF//CxjGNLH+\notaHX4+7mZoKwEHHQsPbVWV+XftDzgd9aPgoOu9bH+t0szmaFSE8v6C0w2ptcoN6\nmjM+3zU89i9y7ZQQZ74b812L9wKBgQC8HVzF0kH5KIGlfopeZqmrDIqN9V8Pji3q\n0dsrVVyd6Ic/xH6LezoedZ0og4Pyk7uJLu+I59xRFOCP1alU/ZQ6itfHaHRkdBeX\nFFjwS4zUR4FGqgb+FItwW2y9Q942is0xXy5H9MLKbLzGemQr6hRYi0laXI5hE2Wb\nqF24uirPxQKBgQCjeOXtspWleBnTuQo3IZMtjUUSyI+ZTsekO1hZXG2D6dyS5N+P\nFWmihOqVp5G0q3T4Ja14fYe7FbxrDEZqhjwzsaOBF4R1j7twJMdgPJfu5YYFmOz4\nH94mTpH75wHnY8mYa7pH/8sOar7qCvEG/N9BzJkEQGT2PGLFGTK4Dvq6hwKBgCo2\nJIU3Yxp33m+2b3Izc0swqz6jmsswyljw8k9M/lVowkCq5QKDik0fcz6OFGOwhtqH\nr7R24tdG6gUcmry5kjN4yGa0p7mK22hJZpO1QEq6KOYkbSFClu+FdGcb/ZcbmmPD\nyezXnYYy1EFtYWEBS8N6reEa99AMvDYrl6xGCilJAoGATgjVLZ7Z1rzi+IBVX9hR\n0vvXecYlZOQ7a2uJHVNgt9dugaThrAAIAKWsie+HvCNEjhANg/1Iez7FwCjcUhbA\nBRSvAjpFuy39SxtdzSfJdclhREQiTeJaFv76bgXZmBZbfM8F+D3cNzubG5oVPGxh\n/KUvCw6NtzZgLbsJwi9p/a8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vertex-ai@flowboard-483410.iam.gserviceaccount.com",
+  "client_id": "112760388888420302396",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vertex-ai%40flowboard-483410.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
