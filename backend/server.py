@@ -1,11 +1,10 @@
-from fastapi import FastAPI, Request, HTTPException, UploadFile, File, Form, Depends
+from fastapi import FastAPI, Request, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from services.storage_service import StorageService
 from services.vertex_service import VertexService
 from services.job_service import JobService
-from services.supabase_service import SupabaseService
 from services.video_merge_service import VideoMergeService
 from utils.env import settings
 from typing import Optional
@@ -15,7 +14,6 @@ import traceback
 storage_service = StorageService()
 vertex_service = VertexService()
 job_service = JobService(vertex_service)
-supabase_service = SupabaseService()
 video_merge_service = VideoMergeService(storage_service)
 
 @asynccontextmanager
@@ -43,23 +41,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Middleware to attach user ID
-@app.middleware("http")
-async def attach_user_middleware(request: Request, call_next):
-    try:
-        uid = supabase_service.get_user_id_from_request(request)
-        if uid:
-            request.state.user_id = uid
-    except Exception:
-        pass
-    response = await call_next(request)
-    return response
-
-
-def get_user_id(request: Request) -> Optional[str]:
-    """Dependency to get user ID from request"""
-    return getattr(request.state, "user_id", None)
 
 
 # ============== Basic Routes ==============
@@ -90,14 +71,9 @@ async def add_video_job(
     files: UploadFile = File(...),
     ending_image: Optional[UploadFile] = File(None),
     global_context: str = Form(""),
-    custom_prompt: str = Form(""),
-    user_id: Optional[str] = Depends(get_user_id)
+    custom_prompt: str = Form("")
 ):
     """Start a video generation job"""
-    # For MVP testing, allow unauthenticated requests
-    # if not user_id:
-    #     raise HTTPException(status_code=401, detail="Unauthorized")
-    
     starting_image_data = await files.read()
     ending_image_data = await ending_image.read() if ending_image else None
     
@@ -108,20 +84,6 @@ async def add_video_job(
         global_context=global_context,
         custom_prompt=custom_prompt
     )
-    
-    # Skip credit check for MVP testing without auth
-    if user_id:
-        # Deduct credits
-        success, error = supabase_service.do_transaction(
-            user_id=user_id,
-            transaction_type="video_gen",
-            credit_usage=10
-        )
-        
-        if not success:
-            if error == "insufficient_credits":
-                raise HTTPException(status_code=402, detail="Not enough credits")
-            raise HTTPException(status_code=500, detail="Transaction failed")
     
     job_id = await job_service.create_video_job(data)
     return {"job_id": job_id}
@@ -165,12 +127,9 @@ async def add_video_job_mock(
     request: Request,
     starting_image: UploadFile = File(...),
     global_context: str = Form(""),
-    custom_prompt: str = Form(""),
-    user_id: Optional[str] = Depends(get_user_id)
+    custom_prompt: str = Form("")
 ):
     """Mock video job for testing"""
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     return {"job_id": "mock-job-id"}
 
 
@@ -186,14 +145,8 @@ async def get_video_job_status_mock(job_id: str):
 
 
 @app.post("/api/jobs/video/merge")
-async def merge_videos(
-    request: Request,
-    user_id: Optional[str] = Depends(get_user_id)
-):
+async def merge_videos(request: Request):
     """Merge multiple videos into one"""
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
     try:
         body = await request.json()
         video_urls = body.get("video_urls", [])
@@ -204,36 +157,12 @@ async def merge_videos(
         if len(video_urls) < 2:
             raise HTTPException(status_code=400, detail="At least 2 video URLs required")
         
-        merged_video_url = await video_merge_service.merge_videos(video_urls, user_id)
+        # Use a generic user_id for storage path
+        merged_video_url = await video_merge_service.merge_videos(video_urls, "anonymous")
         return {"video_url": merged_video_url}
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# ============== Supabase/User Routes ==============
-
-@app.get("/api/supabase/me")
-async def get_current_user(user_id: Optional[str] = Depends(get_user_id)):
-    """Get current user's profile"""
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
-    user_row = supabase_service.get_user_row(user_id)
-    if not user_row or not user_row.data:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    return user_row.data
-
-
-@app.get("/api/supabase/transactions")
-async def get_transactions(user_id: Optional[str] = Depends(get_user_id)):
-    """Get user's transaction history"""
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
-    transactions = supabase_service.get_transaction_log(user_id)
-    return transactions.data if transactions else []
 
 
 # ============== Gemini Routes ==============
@@ -241,30 +170,11 @@ async def get_transactions(user_id: Optional[str] = Depends(get_user_id)):
 @app.post("/api/gemini/image")
 async def generate_image(
     request: Request,
-    image: UploadFile = File(...),
-    user_id: Optional[str] = Depends(get_user_id)
+    image: UploadFile = File(...)
 ):
     """Improve/generate image using Gemini"""
-    # For MVP testing, allow unauthenticated requests
-    # if not user_id:
-    #     raise HTTPException(status_code=401, detail="Unauthorized")
-    
     try:
         image_data = await image.read()
-        
-        # Skip credit check for MVP testing without auth
-        if user_id:
-            # Check and deduct credits
-            success, error = supabase_service.do_transaction(
-                user_id=user_id,
-                transaction_type="image_gen",
-                credit_usage=1
-            )
-            
-            if not success:
-                if error == "insufficient_credits":
-                    raise HTTPException(status_code=402, detail="Not enough credits")
-                raise HTTPException(status_code=500, detail="Transaction failed")
         
         prompt = "Improve the attached image and fill in any missing details. Do not deviate from the original art style too much, simply understand the artist's idea and enhance it a bit."
         
@@ -285,13 +195,9 @@ async def generate_image(
 @app.post("/api/gemini/extract-context")
 async def extract_context(
     request: Request,
-    video: UploadFile = File(...),
-    user_id: Optional[str] = Depends(get_user_id)
+    video: UploadFile = File(...)
 ):
     """Extract context from video using Gemini"""
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    
     try:
         video_data = await video.read()
         

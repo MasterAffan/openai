@@ -17,14 +17,9 @@ export default function App() {
             <NavigationEventListener />
             <Routes>
               <Route path="/" element={<Landing />} />
-              {/* Canvas route enabled for local testing */}
               <Route path="/canvas" element={<Canvas />} />
               <Route path="/app" element={<Canvas />} />
-              {/* Other routes redirect to landing for now */}
-              <Route path="/login" element={<Navigate to="/" replace />} />
-              <Route path="/pricing" element={<Navigate to="/" replace />} />
-              <Route path="/dashboard" element={<Navigate to="/" replace />} />
-              <Route path="/auth/callback" element={<Navigate to="/" replace />} />
+              {/* All other routes redirect to landing */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>

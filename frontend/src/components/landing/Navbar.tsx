@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import {
   Menu,
   X,
-  LogIn,
-  LogOut,
   LayoutDashboard,
-  User as UserIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 import { NavItem } from "../../types/types";
-import { useAuth } from "../../contexts/AuthContext";
 import logoImage from "../../assets/logo.png";
 
 const navItems: NavItem[] = [];
@@ -18,23 +14,6 @@ const navItems: NavItem[] = [];
 const Navbar: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
-
-  // Get user's display name
-  const getUserName = () => {
-    if (!user) return "";
-    return (
-      user.user_metadata?.full_name ||
-      user.user_metadata?.name ||
-      user.email?.split("@")[0] ||
-      "User"
-    );
-  };
-
-  const handleLogout = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -138,10 +117,10 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => navigate('/canvas')}
-              className="flex items-center gap-2 relative overflow-hidden group bg-white/60 backdrop-blur-md text-gray-700 font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/5 hover:shadow-black/10 border border-gray-200/50 cursor-pointer hover:bg-white/80"
+              className="flex items-center gap-2 relative overflow-hidden group bg-black/80 backdrop-blur-md text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/10 hover:shadow-black/20 border border-white/10 cursor-pointer"
               style={{
-                paddingLeft: `${interpolate(16, 12, scrollProgress)}px`,
-                paddingRight: `${interpolate(16, 12, scrollProgress)}px`,
+                paddingLeft: `${interpolate(24, 16, scrollProgress)}px`,
+                paddingRight: `${interpolate(24, 16, scrollProgress)}px`,
                 paddingTop: `${interpolate(8, 6, scrollProgress)}px`,
                 paddingBottom: `${interpolate(8, 6, scrollProgress)}px`,
                 fontSize: `${interpolate(14, 12, scrollProgress)}px`
@@ -154,96 +133,9 @@ const Navbar: React.FC = () => {
                   height: `${interpolate(16, 12, scrollProgress)}px`
                 }}
               />
-              <span className="relative z-10">Dashboard</span>
+              <span className="relative z-10">Open Canvas</span>
+              <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
-            {user ? (
-              <>
-                {/* Profile Button */}
-                <div
-                  className="flex items-center gap-2 bg-white/60 backdrop-blur-md text-gray-700 font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/5 border border-gray-200/50"
-                  style={{
-                    paddingLeft: `${interpolate(12, 12, scrollProgress)}px`,
-                    paddingRight: `${interpolate(12, 12, scrollProgress)}px`,
-                    paddingTop: `${interpolate(8, 6, scrollProgress)}px`,
-                    paddingBottom: `${interpolate(8, 6, scrollProgress)}px`
-                  }}
-                >
-                  <UserIcon
-                    className="transition-all duration-300"
-                    style={{
-                      width: `${interpolate(16, 12, scrollProgress)}px`,
-                      height: `${interpolate(16, 12, scrollProgress)}px`
-                    }}
-                  />
-                  <span
-                    className="transition-all duration-300"
-                    style={{
-                      fontSize: `${interpolate(14, 12, scrollProgress)}px`
-                    }}
-                  >
-                    {getUserName()}
-                  </span>
-                </div>
-                {/* Logout Button */}
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 relative overflow-hidden group bg-black/80 backdrop-blur-md text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/10 hover:shadow-black/20 border border-white/10 cursor-pointer"
-                  style={{
-                    paddingLeft: `${interpolate(16, 12, scrollProgress)}px`,
-                    paddingRight: `${interpolate(16, 12, scrollProgress)}px`,
-                    paddingTop: `${interpolate(8, 6, scrollProgress)}px`,
-                    paddingBottom: `${interpolate(8, 6, scrollProgress)}px`,
-                    fontSize: `${interpolate(14, 12, scrollProgress)}px`
-                  }}
-                >
-                  <LogOut
-                    className="transition-all duration-300"
-                    style={{
-                      width: `${interpolate(16, 12, scrollProgress)}px`,
-                      height: `${interpolate(16, 12, scrollProgress)}px`
-                    }}
-                  />
-                  <span className="relative z-10">Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="flex items-center gap-2 relative overflow-hidden group bg-white/60 backdrop-blur-md text-gray-700 font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/5 hover:shadow-black/10 border border-gray-200/50 cursor-pointer hover:bg-white/80"
-                  style={{
-                    paddingLeft: `${interpolate(16, 12, scrollProgress)}px`,
-                    paddingRight: `${interpolate(16, 12, scrollProgress)}px`,
-                    paddingTop: `${interpolate(8, 6, scrollProgress)}px`,
-                    paddingBottom: `${interpolate(8, 6, scrollProgress)}px`,
-                    fontSize: `${interpolate(14, 12, scrollProgress)}px`
-                  }}
-                >
-                  <LogIn
-                    className="transition-all duration-300"
-                    style={{
-                      width: `${interpolate(16, 12, scrollProgress)}px`,
-                      height: `${interpolate(16, 12, scrollProgress)}px`
-                    }}
-                  />
-                  <span className="relative z-10">Login</span>
-                </button>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="relative overflow-hidden group bg-black/80 backdrop-blur-md text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-black/10 hover:shadow-black/20 border border-white/10 cursor-pointer"
-                  style={{
-                    paddingLeft: `${interpolate(24, 16, scrollProgress)}px`,
-                    paddingRight: `${interpolate(24, 16, scrollProgress)}px`,
-                    paddingTop: `${interpolate(8, 6, scrollProgress)}px`,
-                    paddingBottom: `${interpolate(8, 6, scrollProgress)}px`,
-                    fontSize: `${interpolate(14, 12, scrollProgress)}px`
-                  }}
-                >
-                  <span className="relative z-10">Get Started</span>
-                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </button>
-              </>
-            )}
           </div>
 
           {/* Mobile Menu using Radix Dialog */}
@@ -281,47 +173,12 @@ const Navbar: React.FC = () => {
                     <Dialog.Close asChild>
                       <button
                         onClick={() => navigate('/canvas')}
-                        className="w-full py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl shadow-lg hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-black text-white font-bold rounded-xl shadow-lg hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-center gap-2"
                       >
                         <LayoutDashboard className="w-5 h-5" />
-                        Dashboard
+                        Open Canvas
                       </button>
                     </Dialog.Close>
-                    {user ? (
-                      <>
-                        <div className="w-full py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
-                          <UserIcon className="w-5 h-5" />
-                          {getUserName()}
-                        </div>
-                        <Dialog.Close asChild>
-                          <button
-                            onClick={handleLogout}
-                            className="w-full py-3 bg-black text-white font-bold rounded-xl shadow-lg hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-center gap-2"
-                          >
-                            <LogOut className="w-5 h-5" />
-                            Logout
-                          </button>
-                        </Dialog.Close>
-                      </>
-                    ) : (
-                      <>
-                        <Dialog.Close asChild>
-                          <button
-                            onClick={() => navigate('/login')}
-                            className="w-full py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl shadow-lg hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center gap-2"
-                          >
-                            <LogIn className="w-5 h-5" />
-                            Login
-                          </button>
-                        </Dialog.Close>
-                        <button
-                          onClick={() => navigate('/login')}
-                          className="w-full py-3 bg-black text-white font-bold rounded-xl mt-4 shadow-lg hover:bg-gray-900 transition-colors cursor-pointer"
-                        >
-                          Get Started
-                        </button>
-                      </>
-                    )}
                   </div>
                 </Dialog.Content>
               </Dialog.Portal>

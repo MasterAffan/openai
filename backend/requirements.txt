@@ -6,5 +6,4 @@ python-dotenv
 pydantic-settings
 google-cloud-storage
 google-cloud-core
-supabase
 httpx

@@ -346,32 +346,6 @@ export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
         const errorData = await response
           .json()
           .catch(() => ({ error: "Unknown error" }));
-        if (response.status === 402) {
-          setIsImproving(false);
-          editor.updateShapes([
-            {
-              id: shapeId,
-              type: "aspect-frame",
-              meta: { ...editor.getShape(shapeId)?.meta, isImproving: false },
-            },
-          ]);
-          editor.updateInstanceState({ isReadonly: false });
-
-          window.dispatchEvent(
-            new CustomEvent("app:navigate", {
-              detail: {
-                to: "/pricing",
-                toast: {
-                  type: "error",
-                  message:
-                    "Not enough credits! Purchase more credits to continue.",
-                },
-              },
-            })
-          );
-
-          return;
-        }
         throw new Error(errorData.error || "Failed to improve image");
       }
 
@@ -548,22 +522,6 @@ export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
         const errorData = await response
           .json()
           .catch(() => ({ error: "Unknown error" }));
-        if (response.status === 402) {
-          window.dispatchEvent(
-            new CustomEvent("app:navigate", {
-              detail: {
-                to: "/pricing",
-                toast: {
-                  type: "error",
-                  message:
-                    "Not enough credits! Purchase more credits to continue.",
-                },
-              },
-            })
-          );
-
-          return;
-        }
         throw new Error(errorData.error || "Failed to generate video");
       }
 
@@ -790,7 +748,7 @@ export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
                     const target = e.target as HTMLInputElement;
                     handleBackgroundColorChange({
                       target,
-                      stopPropagation: () => {},
+                      stopPropagation: () => { },
                     } as any);
                   };
                   input.click();
