@@ -46,7 +46,8 @@ class VertexService:
 
         return operation
     
-    async def generate_image_content(self, prompt: str, image: bytes) -> str:
+    async def _generate_image_raw(self, prompt: str, image: bytes) -> bytes:
+        """Generate image and return raw bytes (for internal use like video generation)"""
         response = self.client.models.generate_content(
             model="gemini-2.5-flash-image",
             contents=[
@@ -67,9 +68,12 @@ class VertexService:
         if not response.candidates or not response.candidates[0].content.parts:
             raise Exception(str(response))
         
-        # Get raw image bytes and encode as base64 for JSON serialization
+        return response.candidates[0].content.parts[0].inline_data.data
+    
+    async def generate_image_content(self, prompt: str, image: bytes) -> str:
+        """Generate image and return base64-encoded string (for API responses)"""
         import base64
-        image_bytes = response.candidates[0].content.parts[0].inline_data.data
+        image_bytes = await self._generate_image_raw(prompt, image)
         return base64.b64encode(image_bytes).decode('utf-8')
     
     async def get_video_status(self, operation: GenerateVideosOperation) -> JobStatus:

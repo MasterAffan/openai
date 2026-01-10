@@ -40,13 +40,15 @@ class JobService:
     async def _process_video_job(self, job_id: str, request: VideoJobRequest):
         """Background task that processes the video generation"""
         try:
+            print(f"[DEBUG] Starting video job processing for {job_id}")
+            
             # for parallel tasks
             tasks = [
                 self.vertex_service.analyze_image_content(
                     prompt="Describe any animation annotations you see. Use this description to inform a video director. Be descriptive about location and purpose of the annotations.",
                     image_data=request.starting_image
                 ),
-                self.vertex_service.generate_image_content(
+                self.vertex_service._generate_image_raw(
                     prompt="Remove all text, captions, subtitles, annotations from this image. Generate a clean version of the image with no text. Keep everything else the exact same.",
                     image=request.starting_image
                 )
@@ -54,16 +56,22 @@ class JobService:
             
             if request.ending_image:
                 tasks.append(
-                    self.vertex_service.generate_image_content(
+                    self.vertex_service._generate_image_raw(
                         prompt="Remove all text, captions, subtitles, annotations from this image. Generate a clean version of the image with no text. Keep the art/image style the exact same.",
                         image=request.ending_image
                     )
                 )
             
+            print(f"[DEBUG] Running {len(tasks)} parallel tasks...")
             results = await asyncio.gather(*tasks)
+            print(f"[DEBUG] Parallel tasks completed")
+            
             annotation_description = results[0]
             starting_frame = results[1]
             ending_frame = results[2] if len(results) > 2 else None
+            
+            print(f"[DEBUG] Annotation description: {annotation_description[:100] if annotation_description else 'None'}...")
+            print(f"[DEBUG] Starting frame bytes: {len(starting_frame) if starting_frame else 0}")
 
             operation = await self.vertex_service.generate_video_content(
                 create_video_prompt(request.custom_prompt, request.global_context, annotation_description),
@@ -71,6 +79,8 @@ class JobService:
                 ending_frame,
                 request.duration_seconds
             )
+            
+            print(f"[DEBUG] Video generation started, operation name: {operation.name}")
             
             # Store only the operation name (string) instead of full operation object to save space
             job = {
@@ -86,10 +96,11 @@ class JobService:
             if job_id in self._pending_jobs:
                 del self._pending_jobs[job_id]
             self._jobs[job_id] = job
+            print(f"[DEBUG] Job {job_id} moved to active jobs")
             
         except Exception as e:
             # debug stuff
-            print(f"Error processing video job {job_id}: {e}")
+            print(f"[ERROR] Error processing video job {job_id}: {e}")
             traceback.print_exc()
             error_job = {
                 "status": "error",
@@ -130,12 +141,21 @@ class JobService:
 
         # Use operation_name instead of full operation object
         result = await self.vertex_service.get_video_status_by_name(job["operation_name"])
+        
+        # Debug logging
+        print(f"[DEBUG] Job {job_id} status: {result.status}")
+        print(f"[DEBUG] Raw video URL from Vertex: {result.video_url}")
+
+        video_url = None
+        if result.video_url:
+            video_url = result.video_url.replace("gs://", "https://storage.googleapis.com/")
+            print(f"[DEBUG] Converted video URL: {video_url}")
 
         ret = JobStatus(
             status=result.status,
             job_start_time=datetime.fromisoformat(job["job_start_time"]),
             job_end_time=datetime.now() if result.status == "done" else None,
-            video_url=result.video_url.replace("gs://", "https://storage.googleapis.com/") if result.video_url else None,
+            video_url=video_url,
             metadata=job.get("metadata")
         )
 
