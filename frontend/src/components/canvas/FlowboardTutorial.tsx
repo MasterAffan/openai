@@ -14,7 +14,7 @@ export const TutorialSlideshow: React.FC<TutorialSlideshowProps> = ({
 
   const slides = [
     {
-      title: "Welcome to Flowboard",
+      title: "Welcome to Krafity.ai",
       description:
         "Create beautiful animations in minutes on our canvas",
       videoUrl: "/demo/tutorial0.mp4",
@@ -117,13 +117,12 @@ export const TutorialSlideshow: React.FC<TutorialSlideshowProps> = ({
               {slides.map((_, index) => (
                 <div
                   key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentSlide
+                  className={`h-1.5 rounded-full transition-all duration-300 ${index === currentSlide
                       ? "w-12 bg-pink-500"
                       : index < currentSlide
                         ? "w-1.5 bg-pink-300"
                         : "w-1.5 bg-gray-300"
-                  }`}
+                    }`}
                 />
               ))}
             </div>

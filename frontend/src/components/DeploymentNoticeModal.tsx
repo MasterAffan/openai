@@ -2,13 +2,10 @@ import React from "react";
 import { X } from "lucide-react";
 import { useDeploymentNotice } from "../contexts/DeploymentNoticeContext";
 
-const GITHUB_REPO = "https://github.com/austinjiann/flowboard";
+const GITHUB_REPO = "https://github.com/MasterAffan/openai";
 
 const builders = [
-  { name: "James", url: "https://www.linkedin.com/in/jamessli/" },
-  { name: "Daniel", url: "https://www.linkedin.com/in/danielpu1/" },
-  { name: "Ferdinand", url: "https://www.linkedin.com/in/ferdinand-simmons-zhang-39ba62297/" },
-  { name: "Austin", url: "https://www.linkedin.com/in/austin-jian/" },
+  { name: "Mahesh", url: "#" },
 ];
 
 const DeploymentNoticeModal: React.FC = () => {
@@ -36,12 +33,12 @@ const DeploymentNoticeModal: React.FC = () => {
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-white text-center mb-6 font-ananda">
-          <span className="text-brand-pink">FlowBoard</span>
+          <span className="text-brand-pink">Krafity.ai</span>
         </h2>
 
         {/* Description */}
         <p className="text-zinc-400 text-center mb-6 leading-relaxed">
-          FlowBoard is a video storyboarding tool that transforms your sketches
+          Krafity.ai is a video storyboarding tool that transforms your sketches
           and prompts into context-aware video clips that extend infinitely.
         </p>
 
@@ -60,8 +57,7 @@ const DeploymentNoticeModal: React.FC = () => {
 
         {/* Notice message */}
         <p className="text-zinc-400 text-center text-sm mb-6 leading-relaxed">
-          Due to deployment costs, we can no longer host this project. However, FlowBoard is
-          open-source and easy to self-host. Check out the repo and give us a star!
+          Krafity.ai is open-source and easy to self-host. Check out the repo and give us a star!
         </p>
 
         {/* Builder credits */}

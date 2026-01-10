@@ -22,6 +22,8 @@ import {
   Loader2,
   Lock,
   Unlock,
+  Mic,
+  MicOff,
 } from "lucide-react";
 
 export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
@@ -80,6 +82,63 @@ export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
 
     return () => clearTimeout(timeoutId);
   }, [promptText, shapeId]);
+
+  // Speech to Text Logic
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  const startListening = () => {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      toast.error("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setPromptText((prev) => (prev ? `${prev} ${transcript}` : transcript));
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+      toast.error("Speech recognition failed. Please try again.");
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  const toggleListening = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
 
   if (!frame) return null;
 
@@ -886,6 +945,16 @@ export const FrameActionMenu = ({ shapeId }: { shapeId: TLShapeId }) => {
               }}
               onClick={(e) => e.stopPropagation()}
             />
+            <button
+              onClick={toggleListening}
+              className={`ml-2 p-2 rounded-full transition-colors ${isListening
+                ? "bg-red-100 text-red-500 animate-pulse"
+                : "hover:bg-gray-100 text-gray-500"
+                }`}
+              title={isListening ? "Stop listening" : "Start voice input"}
+            >
+              {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+            </button>
           </div>
         </div>
       )}

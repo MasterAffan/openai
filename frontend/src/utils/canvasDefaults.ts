@@ -127,7 +127,7 @@ export function seedDefaultCanvas(editor: Editor, frameId?: TLShapeId | null) {
     });
   };
 
-  addText("FlowBoard", leftColumnX, topY - 60, { size: "xl" }, 2);
+  addText("Krafity.ai", leftColumnX, topY - 60, { size: "xl" }, 2);
   addText(
     "Plan a shot by laying down a story frame, writing a prompt, and linking it to the next frame.",
     leftColumnX,

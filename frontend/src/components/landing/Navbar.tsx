@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
           >
             <img
               src={logoImage}
-              alt="FlowBoard Logo"
+              alt="Krafity.ai Logo"
               className="transition-all duration-300"
               style={{
                 height: `${interpolate(36, 24, scrollProgress)}px`,
@@ -95,8 +95,8 @@ const Navbar: React.FC = () => {
                 fontSize: `${interpolate(24, 18, scrollProgress)}px`
               }}
             >
-              <span className="font-ananda p-1">F</span>low{" "}
-              <span className="font-ananda">B</span>oard
+              <span className="font-ananda p-1">K</span>rafity
+              <span className="font-ananda">.ai</span>
             </span>
           </Link>
 

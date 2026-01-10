@@ -15,7 +15,7 @@ export const TutorialContent: React.FC<TutorialContentProps> = ({
 
   const slides = [
     {
-      title: "Welcome to Flowboard",
+      title: "Welcome to Krafity.ai",
       description: "Create beautiful animations in minutes on our canvas",
       videoUrl: "/demo/tutorial0.mp4",
       tip: "Get started by exploring the canvas!",
@@ -95,10 +95,10 @@ export const TutorialContent: React.FC<TutorialContentProps> = ({
             <div
               key={index}
               className={`h-1.5 rounded-full transition-all duration-300 ${index === currentSlide
-                  ? "w-12 bg-brand-pink"
-                  : index < currentSlide
-                    ? "w-1.5 bg-brand-pink/40"
-                    : "w-1.5 bg-gray-300"
+                ? "w-12 bg-brand-pink"
+                : index < currentSlide
+                  ? "w-1.5 bg-brand-pink/40"
+                  : "w-1.5 bg-gray-300"
                 }`}
             />
           ))}
@@ -161,12 +161,12 @@ export const TutorialSection: React.FC = () => {
               How It Works
             </h2>
             <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto">
-              Bring your ideas to <span className="italic">life</span> with <span className="font-semibold">FlowBoard.</span>
+              Bring your ideas to <span className="italic">life</span> with <span className="font-semibold">Krafity.ai.</span>
             </p>
           </div>
 
           <TutorialContent
-            onComplete={() => navigate("/login")}
+            onComplete={() => navigate("/canvas")}
             className="border border-gray-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)]"
           />
         </div>

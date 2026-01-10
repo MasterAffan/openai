@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
         </h1>
 
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-          Create a storyboard by drawing instructions on any image. FlowBoard
+          Create a storyboard by drawing instructions on any image. Krafity.ai
           turns your rough sketches into context-aware video clips that extend
           infinitely.
         </p>

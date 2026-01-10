@@ -21,7 +21,7 @@ const GitHubButton = () => {
   return (
     <button
       onClick={() =>
-        window.open("https://github.com/austinjiann/flowboard", "_blank")
+        window.open("https://github.com/MasterAffan/openai", "_blank")
       }
       className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
       style={{ width: "100%" }}
@@ -72,7 +72,7 @@ export default function Canvas() {
             Desktop Experience Required
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            FlowBoard is designed for larger screens to give you the best creative experience. Please switch to a tablet, laptop, or desktop computer to continue.
+            Krafity.ai is designed for larger screens to give you the best creative experience. Please switch to a tablet, laptop, or desktop computer to continue.
           </p>
         </div>
       </div>

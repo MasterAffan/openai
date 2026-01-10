@@ -107,7 +107,7 @@ const DemoSection: React.FC = () => {
             </span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            FlowBoard parses your hand-drawn context, interprets intent with
+            Krafity.ai parses your hand-drawn context, interprets intent with
             artificial intelligence, and generates fluid animations.
           </p>
         </div>
@@ -125,50 +125,45 @@ const DemoSection: React.FC = () => {
               <Tabs.Trigger
                 key={step.value}
                 value={step.value}
-                className={`text-left p-8 rounded-2xl transition-all duration-500 group outline-none ring-offset-2 focus-visible:ring-2 ring-brand-pink/75 relative overflow-hidden ${
-                  activeStep === step.value
+                className={`text-left p-8 rounded-2xl transition-all duration-500 group outline-none ring-offset-2 focus-visible:ring-2 ring-brand-pink/75 relative overflow-hidden ${activeStep === step.value
                     ? "bg-linear-to-br from-brand-pink/10 via-brand-purple/5 to-transparent shadow-xl"
                     : "bg-white/50 hover:bg-white/80 hover:shadow-md"
-                }`}
+                  }`}
               >
                 {/* Step Number */}
                 <div
-                  className={`absolute -top-4 -right-4 text-[120px] font-bold leading-none transition-all duration-500 ${
-                    activeStep === step.value
+                  className={`absolute -top-4 -right-4 text-[120px] font-bold leading-none transition-all duration-500 ${activeStep === step.value
                       ? "text-brand-pink/8 scale-100"
                       : "text-gray-200/50 scale-90"
-                  }`}
+                    }`}
                 >
                   {idx + 1}
                 </div>
 
                 <div className="relative z-10">
                   <div
-                    className={`text-xs font-mono tracking-wider mb-3 transition-all duration-300 ${
-                      activeStep === step.value
+                    className={`text-xs font-mono tracking-wider mb-3 transition-all duration-300 ${activeStep === step.value
                         ? "text-brand-pink/75"
                         : "text-gray-400"
-                    }`}
+                      }`}
                   >
                     STEP {idx + 1}
                   </div>
 
                   <h3
-                    className={`text-2xl font-bold mb-3 transition-all duration-300 ${
-                      activeStep === step.value
+                    className={`text-2xl font-bold mb-3 transition-all duration-300 ${activeStep === step.value
                         ? "text-gray-900"
                         : "text-gray-500"
-                    }`}
+                      }`}
                   >
                     {step.title}
                   </h3>
 
                   <p
-                    className={`text-sm leading-relaxed transition-all duration-300 ${
-                      activeStep === step.value
+                    className={`text-sm leading-relaxed transition-all duration-300 ${activeStep === step.value
                         ? "text-gray-600"
                         : "text-gray-400"
-                    }`}
+                      }`}
                   >
                     {step.desc}
                   </p>
@@ -179,9 +174,8 @@ const DemoSection: React.FC = () => {
                         className="h-full bg-linear-to-r from-brand-pink/25 via-brand-pink/50 to-brand-pink/25"
                         style={{
                           width: "100%",
-                          animation: `widthBar ${
-                            durations[step.value]
-                          }ms linear`,
+                          animation: `widthBar ${durations[step.value]
+                            }ms linear`,
                         }}
                       ></div>
                     </div>
