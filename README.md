@@ -2,7 +2,7 @@
 
 > **Direct Your Video Frame by Frame**
 
-https://github.com/user-attachments/assets/16f3b598-87fc-4f56-af82-0b7a216d3d06
+<img width="1284" height="535" alt="image" src="https://github.com/user-attachments/assets/53566b4a-d323-4c93-8d00-2f1a644f8d48" />
 
 AI-powered video storyboarding that transforms sketches into context-aware video clips. Draw, prompt, generate—infinitely.
 
